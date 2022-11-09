@@ -1,22 +1,24 @@
 
+
+
 //converts number selections for rock paper scissors to string values
 function numToChoice(num) {
-	while(num != 1 || num != 2 || num !=3) {
-		switch (num){
-			case 1:
-				userChoice = 'rock';
-				break;
-			case 2:
-				userChoice = 'paper';
-			case 3:
-				userChoice = 'scissors'
-			default:
-				/* put loop here and display message  */
-				console.log('Please enter 1 for rock, two for paper or three for scissors.')
-		}
+	
+	switch (num) {
+		case 1:
+			userChoice = 'rock';
+			break;
+		case 2:
+			userChoice = 'paper';
+			break;
+		case 3:
+			userChoice = 'scissors';
+			break;
+		default:
+			userChoice = undefined;
 	}
 
-	choice = num;
+	choice = userChoice;
 	num = 0;
 
 	return choice;
@@ -24,17 +26,20 @@ function numToChoice(num) {
 
 //determines who wins of if it's a tie
 function compareChoice(compChoice, userChoice) {
+	let result;
+
 	if (compChoice === userChoice) {
-		let result = 'tie!';
+		result = 'tie!';
 	}
 
 	else if ((compChoice === 1 && userChoice === 2) ||
 		(compChoice === 2 && userChoice === 3) || 
 		(compChoice === 3 && userChoice == 1)) {
-		let result = 'you win!';
+		result = 'you win!';
 	}
-	else
-		let result = 'cp wins.';
+	else {
+		result = 'cp wins.';
+	}
 
 	return result;
 }
@@ -43,23 +48,22 @@ function compareChoice(compChoice, userChoice) {
 function userChoiceValid(userInput) {
 	userInput = false;
 
-	if (userInput != Nan && userInput > 0 && userInput < 4) {
+	if (userInput != NaN && userInput > 0 && userInput < 4) {
 		userInput = true;
 	}
+
+	return userInput;
 }
 
 //restarts the game
 function playAgain() {
-	playChoice = prompt('Play again?\nType Y or N')
+	let playChoice = prompt('Play again?\nType Y to continue or any other key to exit');
 
-	if(playChoice = 'Y' || playChoice = 'y') {
+	if (playChoice == 'Y' || playChoice == 'y') {
 		playAgain = true;
 	}
-	else if(playChoice = 'N' || playChoice = 'n') {
-		playAgain = false;
-	}
 	else {
-		playAgain = undefined;
+		playAgain = false;
 	}
 }
 
@@ -74,22 +78,23 @@ console.log(intro);
 
 let compChoice = Math.floor(Math.random() * 3) + 1;
 
-let userChoice = prompt('1. Rock\n2. Paper\n3. Scissors');
-
-while !userChoiceValid(userChoice) {
-	console.log('Please select a valid choice');
+let userChoice = parseInt(prompt('1. Rock\n2. Paper\n3. Scissors'));
+/*
+do {
+	userChoiceValid(userChoice);
 }
+while (userChoiceValid(userChoice) == false);
+*/
 
 //show choices
 let userString = numToChoice(userChoice);
+
 let compString = numToChoice(compChoice);
 
-console.log(`You: ${userString}\nComputer ${compString}`);
+console.log(`You: ${userString}\nComputer: ${compString}`);
 
 //Compare
 
 console.log(compareChoice(compChoice, userChoice));
 
-console.log(playAgain);
-
-
+playAgain();
