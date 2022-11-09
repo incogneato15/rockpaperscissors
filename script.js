@@ -3,98 +3,154 @@
 
 //converts number selections for rock paper scissors to string values
 function numToChoice(num) {
-	
+	let choice; 
+
 	switch (num) {
 		case 1:
-			userChoice = 'rock';
+			choice = 'rock';
 			break;
 		case 2:
-			userChoice = 'paper';
+			choice = 'paper';
 			break;
 		case 3:
-			userChoice = 'scissors';
+			choice = 'scissors';
 			break;
-		default:
-			userChoice = undefined;
+		default: //error recollect data and recallibrate round
+			choice = undefined;
+			round--;
+			window.alert('nope! only enter 1, 2, or 3.');
 	}
 
-	choice = userChoice;
 	num = 0;
 
 	return choice;
 }
 
-//determines who wins of if it's a tie
+//determines who wins or if it's a tie.
+//score[0] is user, score[1] is cpu.
+
 function compareChoice(compChoice, userChoice) {
 	let result;
 
-	if (compChoice === userChoice) {
+	if (userChoice === undefined) {
+		console.log('error');
+		prompt('please enter\n1 ROCK\n2 PAPER\n3 SCISSORS\n to continue.');
+	}
+	else if (compChoice === userChoice) {
 		result = 'tie!';
+		score[0]++;
+		score[1]++;
 	}
 
 	else if ((compChoice === 1 && userChoice === 2) ||
 		(compChoice === 2 && userChoice === 3) || 
 		(compChoice === 3 && userChoice == 1)) {
+		
 		result = 'you win!';
+		score[0]++;
+	}
+	else if ((userChoice === 1 && compChoice === 2) ||
+		(userChoice === 2 && compChoice === 3) ||
+		(userChoice === 3 && compChoice ===1)) {
+		result = 'cp wins.';
+		score[1]++;
 	}
 	else {
-		result = 'cp wins.';
+		console.log('error')
 	}
 
 	return result;
 }
 
-//ensures that user has chosen a valid choice
-function userChoiceValid(userInput) {
-	userInput = false;
 
-	if (userInput != NaN && userInput > 0 && userInput < 4) {
-		userInput = true;
-	}
-
-	return userInput;
-}
 
 //restarts the game
 function playAgain() {
-	let playChoice = prompt('Play again?\nType Y to continue or any other key to exit');
+	let play = prompt('Play again?\nType Y to continue or any other key to exit');
 
-	if (playChoice == 'Y' || playChoice == 'y') {
-		playAgain = true;
+	if (play == 'Y' || play == 'y') {
+		play = true;
 	}
 	else {
-		playAgain = false;
+		play = false;
 	}
+	return play;
+}
+
+//gets computer choice
+function getCompChoice() {
+	let choice = Math.floor(Math.random() * 3) + 1;
+	return choice;
+}
+
+//gets choice from user
+function getUserChoice() {
+	let choice = parseInt(prompt('1. Rock\n2. Paper\n3. Scissors'));
+	return choice;
+}
+
+//plays a round of r p s
+function playRound() {
+
+	//Computer and user choose a r p or s
+
+	let compChoice = getCompChoice();
+	let userChoice;
+
+	//gets userChoice & repeats if invalid
+	do {
+		userChoice = getUserChoice();
+	}
+	while (userChoice > 3 || userChoice < 1 || userChoice === undefined)
+	//show choices
+
+
+	let userString = numToChoice(userChoice);
+
+	let compString = numToChoice(compChoice);
+
+	console.log(`You: ${userString}\nComputer: ${compString}`);
+
+	//Compare
+
+	console.log(compareChoice(compChoice, userChoice));
+
+	console.log(`Your score ${score[0]}\n   vs\nComputer score ${score[1]}`);
 }
 
 
+
+
+//
 //*** ROCK PAPER SCISSORS GO ***
+//
 
-let intro = 'ROCK PAPER SCISSORS GO!\n';
 
-console.log(intro);
+//an array to keep score
+let score = [0, 0];
+let round = 1;
 
-//Computer and user choose a r p or s
-
-let compChoice = Math.floor(Math.random() * 3) + 1;
-
-let userChoice = parseInt(prompt('1. Rock\n2. Paper\n3. Scissors'));
-/*
 do {
-	userChoiceValid(userChoice);
+	for (round === 1; round < 6; round++) {
+		let intro = 'Round ' + round + ' of 5\nROCK PAPER SCISSORS GO!\n';
+		console.log(intro);
+
+		playRound();
+	}
+
+	let boolPlay = playAgain();
+		
+	if (boolPlay === true)	{
+		//reset round and scores
+		round = 1;
+		score = [0,0];
+	}
+	else {
+		//otherwise terminate game by
+		//trigger while condition
+		round = 7;
+	}
+
+	console.log(`round is ${round}`);
 }
-while (userChoiceValid(userChoice) == false);
-*/
-
-//show choices
-let userString = numToChoice(userChoice);
-
-let compString = numToChoice(compChoice);
-
-console.log(`You: ${userString}\nComputer: ${compString}`);
-
-//Compare
-
-console.log(compareChoice(compChoice, userChoice));
-
-playAgain();
+while (round < 6)
